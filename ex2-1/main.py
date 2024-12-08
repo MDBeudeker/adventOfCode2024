@@ -11,48 +11,41 @@ with open(input, 'r') as fd:
 
 total, check = 0, 0
 
+def safetyCheck(report):
+  counter = 0
+  firstnumber, lastnumber = int(report[0]), int(report[-1])
+  if firstnumber > lastnumber:
+    direction = -1
+  elif firstnumber < lastnumber:
+    direction = 1
+  else:
+    return False
+  for data in report:
+    if counter > 0:
+        aold = a
+        a = int(data)
+        print (aold, a, (direction * (a - aold))) 
+        if (0 < (direction * (a - aold)) <= 3):
+          safe = True
+        else:
+          safe = False
+          break
+    elif counter == 0:
+      a = int(data)
+      counter += 1
+
+  print ("report {} is safe: {}".format(report, safe))
+  return safe
+
+
+
+counter = 0
+ #expect 585
 for report in alist:
   # set safe to False
   safe = False
-  counter = 0
-  # check whether decreasing
-  if int(report[0]) > int(report[-1]):
-    # print("decreasing! {}, {}".format(report[0], report[-1]))
-    for data in report:
-      if counter == 0:
-        a = int(data)
-        counter += 1
-      else:
-        aold = a
-        a = int(data)
-        # print (aold, a) 
-        if (0 < (aold - a) <= 3):
-          safe = True
-        else:
-          safe = False
-          break
-  # when increasing
-  if int(report[0]) < int(report[-1]):
-    for data in report:
-      if counter == 0:
-        a = int(data)
-        counter += 1
-      else: 
-        aold = a
-        a = int(data)
-        # print (aold, a) 
-        if (0 < (a - aold) <= 3):
-          safe = True
-        else:
-          safe = False
-          break
-  # edge case: start and end are the same = safe is False by default
-  if int(report[0]) == int(report[-1]):
-    check += 1
-    safe = False
-  print ("report {} is safe: {}".format(report, safe))
-
-
+  safe = safetyCheck(report)
+  counter += 1
   if safe == True:
     total += 1
 
