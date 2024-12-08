@@ -1,5 +1,5 @@
-input = "input.txt"
-#input = "testinput.txt"
+input = "input"
+# input = "testinput"
 
 alist = []
 blist = []
@@ -14,17 +14,14 @@ with open(input, 'r') as fd:
 
 
 total = 0
+counter = 0
 
-length = len(alist)
-  
-for a in range(length):
-  diff = abs(min(alist) - min(blist))
-  total += diff
-  alist.remove(min(alist))
-  blist.remove(min(blist))
-  print(diff)
-  print("len alist is {}".format(len(alist)))
-
+while counter < len(alist):
+  number = alist[counter]
+  occurences = blist.count(alist[counter])
+  total += number * occurences
+  print("found {} occurences of {} in listb, bringing the total to {}".format(occurences, number, total))
+  counter += 1
 
 print("final len alist is {}".format(len(alist)))
 

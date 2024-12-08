@@ -1,5 +1,5 @@
-input = "input.txt"
-#input = "testinput.txt"
+input = "input"
+#input = "testinput"
 
 alist = []
 blist = []
