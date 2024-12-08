@@ -48,18 +48,11 @@ def safetyCheck(report, debug=0):
 
 def dampen(report):
   print("result for report {} is false, trying to dampen".format(report))
-  for data in report:
-    # clone report so that original report is not modified
-    dampenedReport = report[:]
-    dampenedReport.remove(data)
-
-    # do a safety check on that particular dampened report
-    # print(dampenedReport)
-    safe = safetyCheck(dampenedReport, debug =1)
-    if safe == True:
-      print("received {} from report {} by dampening {}".format(safe, report, data))
-      return True
-  print("received {} from report {}".format(safe, report, data))
+  for i in range(len(report)):
+    dampenedReport = report[:i] + report[i+1:]  # Remove the i-th element
+    if safetyCheck(dampenedReport):
+        print("received safe result for report {} by dampening {}".format(report, report[i]))
+        return True
   return False
     
 
