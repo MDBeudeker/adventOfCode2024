@@ -1,7 +1,7 @@
 import csv, math
 
-# input = "input"
-input = "testinput"
+input = "input"
+# input = "testinput"
 
 alist = []
 with open(input, 'r') as csv:
@@ -24,9 +24,9 @@ def findWord(content, word, width, height, total):
 
 def searchLetters(content, word, np, positionx, positiony, width, height, size):
   total = 0
-  checkLeft = (positionx - len(word) >= 0)
-  checkRight = (positionx + len(word) <= width)
-  checkDown = ((positiony + len(word) <= height))
+  checkLeft = (positionx - len(word[1:]) >= 0)
+  checkRight = (positionx + len(word[1:]) <= width)
+  checkDown = ((positiony + len(word[1:]) <= height))
   checkUp = ((positiony - len(word[1:])) >= 0)
   
   #left
@@ -143,3 +143,6 @@ content = content.replace("\n", "")
 total = 0
 total = findWord(content, "XMAS", width, height, total)
 print("Total: {}".format(total))
+
+# answer: 2505 -> Too Low
+# Attempt 2: 2532 - correct
