@@ -1,7 +1,7 @@
 import csv, math
 
-# input = "input"
-input = "testinput"
+input = "input"
+# input = "testinput"
 
 alist = []
 with open(input, 'r') as csv:
@@ -24,51 +24,34 @@ def findWord(content, word, width, height, total):
 
 def searchLetters(content, word, np, positionx, positiony, width, height, size):
   total = 0
-  checkLeft = (positionx - 1 >= 0)
+  checkLeft = (positionx - 1 > 0)
   checkRight = (positionx + 1 <= width)
   checkDown = ((positiony + 1 <= height))
   checkUp = ((positiony - 1) >= 0)
-  
+  answer = []
   # down-right
-  counter = 1
-  for char in word[1:]:
-    if checkDown & checkRight:
-      nextValue = (np+(width * counter)+ counter)
-      if char == content[nextValue]:
-        counter += 1
-        if (counter == len(word)) & (char == 'S'):
-          print("Found! {} at position {} x {} y {} going down-right".format(word, np, positionx, positiony))
-          total +=1
-  # up-left
-  counter = 1
-  for char in word[1:]:
-    if checkUp & checkLeft:
-      nextValue = np-(width * counter)- counter
-      if char == content[nextValue]:
-        counter += 1
-        if (counter == len(word)) & (char == 'S'):
-          print("Found! {} at position {} x {} y {} going up-left".format(word, np, positionx, positiony))
-          total +=1
+  if checkDown & checkRight:
+    nextValue = (np+(width)+ 1)
+    if content[nextValue] == 'S' or content[nextValue] == 'M':
+      answer.append(content[nextValue])
   # down-left
-  counter = 1
-  for char in word[1:]:
-    if checkDown & checkLeft:
-      nextValue = np+(width * counter)-counter
-      if char == content[nextValue]:
-        counter += 1
-        if (counter == len(word)) & (char == 'S'):
-          print("Found! {} at position {} x {} y {} going down-left".format(word, np, positionx, positiony))
-          total +=1
+  if checkDown & checkLeft:
+    nextValue = np+(width)-1
+    if content[nextValue] == 'S' or content[nextValue] == 'M':
+      answer.append(content[nextValue])
+  # up-left
+  if checkUp & checkLeft:
+    nextValue = np-(width)- 1
+    if content[nextValue] == 'S' or content[nextValue] == 'M':
+      answer.append(content[nextValue])
   # up-right
-  counter = 1
-  for char in word[1:]:
-    if checkUp & checkRight:
-      nextValue = np-(width * counter)+ counter
-      if char == content[nextValue]:
-        counter += 1
-        if (counter == len(word)) & (char == 'S'):
-          print("Found! {} at position {} x {} y {} going up-right".format(word, np, positionx, positiony))
-          total +=1
+  if checkUp & checkRight:
+    nextValue = np-(width)+1
+    if content[nextValue] == 'S' or content[nextValue] == 'M':
+      answer.append(content[nextValue])
+  if answer == ['M', 'M', 'S', 'S'] or answer == ['S', 'M', 'M', 'S'] or answer == ['S', 'S', 'M', 'M'] or answer == ['M', 'S', 'S', 'M']:
+    print("Found MAS at position {}, positionx {} positiony {}".format(nextValue, positionx, positiony))
+    total +=1
   return total
 
     
@@ -84,5 +67,4 @@ total = 0
 total = findWord(content, "MAS", width, height, total)
 print("Total: {}".format(total))
 
-# answer: 2505 -> Too Low
-# Attempt 2: 2532 - correct
+# answer: 1941
