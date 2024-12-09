@@ -1,4 +1,4 @@
-import csv
+import csv, math
 
 # input = "input"
 input = "testinput"
@@ -13,9 +13,9 @@ def findWord(content, word, width, height, total):
 
   for character in content:
     if character == firstLetter:
-      positionx = np % width
-      positiony = round(np / width)
-      # print("Found! {} at cell {} position x {} y {}".format(firstLetter, np, positionx, positiony))
+      positionx = ((np ) % width) + 1
+      positiony = math.ceil((np+1)/width)
+      print("Found! {} at cell {} position x {} y {}".format(firstLetter, np, positionx, positiony))
       total = total + searchLetters(content, word, np, positionx, positiony, width, height, width*height)
     np += 1
   return total
@@ -24,10 +24,11 @@ def findWord(content, word, width, height, total):
 
 def searchLetters(content, word, np, positionx, positiony, width, height, size):
   total = 0
-  checkLeft = ((np - len(word) + 1) % width >= 0)
-  checkRight = (np + len(word) + 1) % width < len(word)
-  checkDown = ((np + (width * len(word)) + 1) < size)
-  checkUp = ((np - (width * len(word[1:])) + 1) > 0)
+  checkLeft = (positionx - len(word) >= 0)
+  checkRight = (positionx + len(word) <= width)
+  checkDown = ((positiony + len(word) <= height))
+  checkUp = ((positiony - len(word[1:])) >= 0)
+  
   #left
   counter = 1
   for char in word[1:]:
@@ -137,7 +138,6 @@ content = content.replace("\r\n", "\n").replace("\r", "\n")
 
 width = len(content.split("\n")[0])
 height = len(content.split("\n"))
-print(width, height)
 content = content.replace("\n", "")
 
 total = 0
