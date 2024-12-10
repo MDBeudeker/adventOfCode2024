@@ -1,7 +1,7 @@
 import csv, math
 
-# input = "input"
-input = "testinput"
+input = "input"
+# input = "testinput"
 
 alist = []
 with open(input, 'r') as csv:
@@ -44,26 +44,22 @@ for page in pages:
 print(correctpages)
 print("wrongpages before", wrongpages)
 
-wrongpagesnew = []
+sortedwrongpages = []
 # check for wrong pages
 for page in wrongpages:
-  valid = False
-  for rule in rules:
-    (x,y) = rule.split("|")
-    if ((page.find(x) >= 0) & (page.find(y) >= 0)):
-      valid = False
-      # do the swap values anyway, since the array consists only of wrong values. then do a while loop over all the rules again
-      while (page.find(x) > page.find(y)):
-        page = swap_values(page, x,y)
-        if (page.find(x) < page.find(y)):
-          wrongpagesnew.append(page)
-          break
-        # something goes wrong here, maybe we need to switch values multiple times for multpiple rules
-    else:
-      valid = True
+  newpage = page
+  while check_page(newpage, rules) == False:
+    for rule in rules:
+      (x,y) = rule.split("|")
+      if ((newpage.find(x) >= 0) & (newpage.find(y) >= 0)):
+        valid = False
+        while (newpage.find(x) > newpage.find(y)):
+          newpage = swap_values(newpage, x,y)
+          if (newpage.find(x) < newpage.find(y)):
+            break
+  sortedwrongpages.append(newpage)
 
-print("wrongpages after", wrongpagesnew)
-exit()
+print("sorted wrongpages ", sortedwrongpages)
 
 total = 0
 for correctpage in correctpages:
@@ -71,11 +67,12 @@ for correctpage in correctpages:
   midpoint = int((len(values)) / 2)
   total += int(values[midpoint])
 print(total)
-exit()
-print(wrongpages)
+print(sortedwrongpages)
 total = 0
-for wrongpage in wrongpages:
-  values = wrongpage.split(",")
+for sortedwrongpage in sortedwrongpages:
+  values = sortedwrongpage.split(",")
   midpoint = int((len(values)) / 2)
   total += int(values[midpoint])
 print(total)
+
+# correctanswer: 5184
