@@ -18,15 +18,16 @@ print(rules, pages)
 
 correctpages = []
 
-for page in pages:
-  valid = True
+def check_page(page, rules):
   for rule in rules:
     (x,y) = rule.split("|")
     if ((page.find(x) >= 0) & (page.find(y) >= 0)):
       if (page.find(x) > page.find(y)):
-        valid = False
-        break
-  if valid:
+        return False
+  return True
+
+for page in pages:
+  if (check_page(page, rules)):
     correctpages.append(page)
 
 print(correctpages)
