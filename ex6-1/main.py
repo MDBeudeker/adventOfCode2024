@@ -37,40 +37,19 @@ def moveGuard(guard, position, content, width, height):
   content = content.replace(guard,'X')
   if guard == '^':
     nextposition = position - width
-    if content[nextposition] == '.':
-      content = stringReplace(content, nextposition, '^')
-      position = nextposition
-    elif content[nextposition] == '#':
-      guard = rotateGuard(guard)
-    else:
-      position = nextposition
   if guard == '>':
     nextposition = position + 1
-    if content[nextposition] == '.':
-      content = stringReplace(content, nextposition, '>')
-      position = nextposition
-    elif content[nextposition] == '#':
-      guard = rotateGuard(guard)
-    else:
-      position = nextposition
   if guard == 'v':
     nextposition = position + width
-    if content[nextposition] == '.':
-      content = stringReplace(content, nextposition, 'v')
-      position = nextposition
-    elif content[nextposition] == '#':
-      guard = rotateGuard(guard)
-    else:
-      position = nextposition
   if guard == '<':
     nextposition = position - 1
-    if content[nextposition] == '.':
-      content = stringReplace(content, nextposition, '>')
-      position = nextposition
-    elif content[nextposition] == '#':
-      guard = rotateGuard(guard)
-    else:
-      position = nextposition
+  if content[nextposition] == '.':
+    content = stringReplace(content, nextposition, guard)
+    position = nextposition
+  elif content[nextposition] == '#':
+    guard = rotateGuard(guard)
+  else:
+    position = nextposition
     
   return (position, content, guard)
       
@@ -93,7 +72,7 @@ while position < (len(content) - 1):
   print('')
   (position, content, guard) = moveGuard(guard, position, content, width, height)
   counter +=1
-  if counter == 15:
+  if counter == 20:
     exit()
 
 
