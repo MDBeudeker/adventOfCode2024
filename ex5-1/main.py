@@ -1,7 +1,7 @@
 import csv, math
 
-# input = "input"
-input = "testinput"
+input = "input"
+# input = "testinput"
 
 alist = []
 with open(input, 'r') as csv:
@@ -22,23 +22,17 @@ for page in pages:
   valid = True
   for rule in rules:
     (x,y) = rule.split("|")
-    if ((x in page) & (y in page)):
-      print("Found {} and {} in {}".format(x, y, page))
-      
-      # if position(x) < position(y)
-      # # valid = True
-      # else:
-      # # valid = False
-      # when all rules correct
-  # if valid == True
-  #   correctpages.append(page)
+    if ((page.find(x) >= 0) & (page.find(y) >= 0)):
+      if (page.find(x) > page.find(y)):
+        valid = False
+        break
+  if valid:
+    correctpages.append(page)
 
 print(correctpages)
 total = 0
 for correctpage in correctpages:
   values = correctpage.split(",")
   midpoint = int((len(values)) / 2)
-  print("Midpoint of {} is {}".format(correctpage, midpoint))
-  print("mid value is {}".format(values[midpoint]))
   total += int(values[midpoint])
 print(total)
