@@ -1,7 +1,7 @@
 import csv, math
 
-# input = "input"
-input = "testinput"
+input = "input"
+# input = "testinput"
 
 alist = []
 with open(input, 'r') as csv:
@@ -10,7 +10,7 @@ with open(input, 'r') as csv:
 def printContent(content, width, height):
   counter = 0
   for char in content:
-    print(char, end='')
+    # print(char, end='')
     counter +=1
     if counter == width:
       print("")
@@ -31,9 +31,20 @@ def stringReplace(string, position, character):
   tempstring = string[:position] + character + string[position+1:]
   return tempstring
 
+def checkOutOfBounds(position, nextposition, width, content):
+  # check verticals
+  if nextposition < 0 or nextposition > len(content):
+    return True
+  if ((nextposition == position + 1 ) & (nextposition % width == 0)):
+    return True
+  if ((nextposition == position - 1 ) & (position % width == 0)):
+    return True
+  else:
+    return False
+
 def moveGuard(guard, position, content, width, height):
   
-  print(position, guard)
+  # print(position, guard)
   content = content.replace(guard,'X')
   if guard == '^':
     nextposition = position - width
@@ -43,15 +54,17 @@ def moveGuard(guard, position, content, width, height):
     nextposition = position + width
   if guard == '<':
     nextposition = position - 1
-  if content[nextposition] == '.':
-    content = stringReplace(content, nextposition, guard)
-    position = nextposition
-  elif content[nextposition] == '#':
-    guard = rotateGuard(guard)
+  outOfBounds = checkOutOfBounds(position, nextposition, width, content)
+  if outOfBounds == False:
+    if (content[nextposition] == '.' or content[nextposition] == 'X'):
+      content = stringReplace(content, nextposition, guard)
+      position = nextposition
+    elif content[nextposition] == '#':
+      guard = rotateGuard(guard)
   else:
     position = nextposition
     
-  return (position, content, guard)
+  return (outOfBounds, position, content, guard)
       
    
 
@@ -67,15 +80,15 @@ guard = '^'
 position = content.find(guard)
 
 counter = 0
-while position < (len(content) - 1):
-  printContent(content, width, height)
-  print('')
-  (position, content, guard) = moveGuard(guard, position, content, width, height)
+outOfBounds= False
+while outOfBounds == False:
+  # print('')
+  # printContent(content, width, height)
+  (outOfBounds, position, content, guard) = moveGuard(guard, position, content, width, height)
+  print(outOfBounds)
   counter +=1
-  if counter == 20:
-    exit()
 
-
+total = content.count('X')
 print("Guard {} found at position {} found {} Xes".format(guard, position, total))
 
-# answer: 1941
+# answer: 4939
