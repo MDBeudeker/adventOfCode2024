@@ -42,7 +42,7 @@ def checkOutOfBounds(position, nextposition, width, content):
   else:
     return False
 
-def moveGuard(guard, position, content, width, height, infiniteLoop, bumpedObstacle):
+def moveGuard(guard, position, content, width, height, infiniteLoop, reflectionOCount, reflectionCount):
   
   # print(position, guard)
   if guard == '^':
@@ -60,19 +60,28 @@ def moveGuard(guard, position, content, width, height, infiniteLoop, bumpedObsta
   outOfBounds = checkOutOfBounds(position, nextposition, width, content)
   if outOfBounds == False:
     if (content[nextposition] == '.' or content[nextposition] == '|' or content[nextposition] == '-'):
+      # print(guard, content[nextposition])
+      if (guard =='V' or guard == '^') and content[nextposition] == '|':
+          if reflectionOCount > 3:
+            infiniteLoop = True
+          if reflectionCount > 10000:
+            infiniteLoop = True
+      if (guard =='<' or guard == '>') and content[nextposition] == '-':
+          if reflectionOCount > 3:
+            infiniteLoop = True
+          if reflectionCount > 10000:
+            infiniteLoop = True
       content = stringReplace(content, nextposition, guard)
       position = nextposition
-    elif content[nextposition] == '#':
+    elif (content[nextposition] == '#') or (content[nextposition] == 'O'):
       guard = rotateGuard(guard)
-    elif content[nextposition] == 'O':
-      guard = rotateGuard(guard)
-      if bumpedObstacle == True:
-        infiniteLoop = True
-      bumpedObstacle = True
+      reflectionCount += 1
+      if content[nextposition] == 'O':
+        reflectionOCount +=1
   else:
     position = nextposition
     
-  return (outOfBounds, position, content, guard, infiniteLoop, bumpedObstacle)
+  return (outOfBounds, position, content, guard, infiniteLoop, reflectionOCount, reflectionCount)
       
    
 
@@ -99,21 +108,22 @@ for i in range(len(content)):
   guard = startOrientation
   outOfBounds = False
   infiniteLoop = False
-  bumpedObstacle = False
+  reflectionOCount = 0
+  reflectionCount = 0
   # content = stringReplace(startContent, 2163+i, "O")
-  content = stringReplace(startContent, 2163+i, "O")
+  # content = stringReplace(startContent, 2163+i, "O")
+  content = stringReplace(startContent, i, "O")
   # printContent(content, width, height)
   while (outOfBounds == False) and (infiniteLoop == False):
     # print('')
     # printContent(content, width, height)
-    (outOfBounds, position, content, guard, infiniteLoop, bumpedObstacle) = moveGuard(guard, position, content, width, height,infiniteLoop, bumpedObstacle)
+    (outOfBounds, position, content, guard, infiniteLoop, reflectionOCount, reflectionCount) = moveGuard(guard, position, content, width, height,infiniteLoop, reflectionOCount, reflectionCount)
     # printContent(content, width, height)
-    if position == startposition and guard == startOrientation:
-      print(infiniteLoopCounter)
-      infiniteLoop = True
     counter +=1
     if infiniteLoop == True:
       print("infinite loop detected!")
+      printContent(content, width, height)
+
       infiniteLoopCounter += 1
       # printContent(content, width, height)
     # if counter == 10000:
@@ -131,4 +141,4 @@ for i in range(len(content)):
 print("found {} infinite loops".format(infiniteLoopCounter))
 # print("Guard {} found at position {} found {} |es and {} -es".format(guard, position, total, total2))
 
-# answer: 4939
+# answer: 1434
